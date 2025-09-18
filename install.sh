@@ -10,6 +10,10 @@
 set -euo pipefail
 
 # Configuration
+# TEMPORARY TESTING - REMOVE AFTER TESTING
+TESTING_MODE="true"  # Set to "true" to bypass license verification for testing
+# END TEMPORARY TESTING
+
 GITHUB_RAW_URL="https://raw.githubusercontent.com/rksuthar327/RKniX/master/setup.sh"
 GITHUB_TOKEN="ghp_your_private_repo_token_here"  # GitHub token for private repo access
 SETUP_SCRIPT_NAME="rknix_setup.sh"
@@ -130,6 +134,14 @@ check_os() {
 # Function to validate license key format
 validate_license_key() {
     local license_key="$1"
+    
+    # TEMPORARY TESTING BYPASS - REMOVE AFTER TESTING
+    if [[ "$TESTING_MODE" == "true" ]]; then
+        log_info "🧪 TESTING MODE: Bypassing license key validation"
+        log_info "License Key: $license_key (not validated)"
+        return 0
+    fi
+    # END TEMPORARY TESTING BYPASS
     
     if [[ -z "$license_key" ]]; then
         log_error "License key is required"
@@ -324,8 +336,8 @@ main() {
     # Show banner
     show_banner
     
-    # Check if license key is provided
-    if [[ $# -lt 1 ]]; then
+    # Check if license key is provided (unless in testing mode)
+    if [[ $# -lt 1 ]] && [[ "$TESTING_MODE" != "true" ]]; then
         log_error "License key is required"
         echo ""
         echo "Usage: sudo bash install.sh <LICENSE_KEY>"
@@ -333,7 +345,18 @@ main() {
         exit 1
     fi
     
-    local license_key="$1"
+    # Set license key (use TEST key if none provided in testing mode)
+    local license_key="${1:-TEST-LICENSE-KEY123}"
+    
+    # Show testing mode warning
+    if [[ "$TESTING_MODE" == "true" ]]; then
+        echo ""
+        log_warning "🧪 RUNNING IN TESTING MODE 🧪"
+        log_warning "License verification is BYPASSED"
+        log_warning "Remove TESTING_MODE before production use"
+        echo ""
+        sleep 2
+    fi
     
     # Execute installation steps
     check_root
