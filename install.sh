@@ -15,7 +15,7 @@ TESTING_MODE="true"  # Set to "true" to bypass license verification for testing
 # END TEMPORARY TESTING
 
 GITHUB_RAW_URL="https://raw.githubusercontent.com/rksuthar327/RKniX/master/setup.sh"
-GITHUB_TOKEN="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"  # GitHub token for private repo access
+GITHUB_TOKEN="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"  # GitHub token for private repo access
 SETUP_SCRIPT_NAME="rknix_setup.sh"
 TEMP_DIR="/tmp/rknix_install"
 
